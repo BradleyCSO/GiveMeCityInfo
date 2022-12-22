@@ -1,0 +1,11 @@
+﻿@page
+@model GiveMeCityInfo.Pages.CitiesModel
+
+
+<p>@Model?.Cities?.Count() result(s) found for @Model?.SearchQuery</p>
+
+@foreach (var city in Model?.Cities ?? new List<Models.City>())
+{
+    <p>@city.name</p>
+    <p>@city.description</p>
+}

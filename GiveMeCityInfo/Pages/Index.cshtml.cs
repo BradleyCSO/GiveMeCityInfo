@@ -1,20 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GiveMeCityInfo.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace GiveMeCityInfo.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
+        [BindProperty]
+        public Search? Search { get; set; }
 
         public void OnGet()
         {
 
+        }
+
+        public IActionResult OnPost()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            return RedirectToPage("/Cities", new { Search?.SearchQuery });
         }
     }
 }
