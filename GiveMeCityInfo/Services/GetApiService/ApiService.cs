@@ -49,7 +49,7 @@ namespace GiveMeCityInfo.Services.GetApiService
             // Build query string
             foreach (var country in countries)
             {
-                query.Add("country", country);
+                query.Add("countries", country);
             }
             query["pageNumber"] = pageNumber;
 

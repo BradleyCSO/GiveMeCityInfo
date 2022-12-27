@@ -15,7 +15,12 @@ namespace GiveMeCityInfo.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Cities = await ApiService.GetCitiesByCountry(SelectedCountries, Request.Query["PageNumber"]);
+            SelectedCountries = Request.Query["SelectedCountries"];
+
+            var pageNumber = Request.Query["PageNumber"].FirstOrDefault() ?? "1";
+            var selectedCountries = Request.Query["SelectedCountries"].ToArray();
+
+            Cities = await ApiService.GetCitiesByCountry(selectedCountries, pageNumber);
             Countries = await ApiService.GetCountries();
 
             return Page();

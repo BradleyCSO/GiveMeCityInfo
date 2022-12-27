@@ -19,10 +19,11 @@
     <!-- Countries -->
     <div class="countries form-group">
         <select multiple class="form-control countries-select" name="SelectedCountries" id="country">
-            @if (Model.SelectedCountries.Any()) {
+            @if (Model.SelectedCountries.Any())
+            {
                 foreach (var country in Model.SelectedCountries)
                 {
-                    <option selected="selected" value=@country>@country</option>
+                    <option selected="selected" value="@country">@country</option>
                 }
             }
             @foreach (var country in Model?.Countries?.Except(Model.SelectedCountries) ?? new List<string>())
@@ -36,21 +37,15 @@
 </form>
 
 <div class="city-items container">
-    @* Show filtered response *@
-    @if (HttpContext.Request.Query.Any())
-    {
-        @foreach (var city in Model?.Cities?.Cities?.
-                  Where(c => c.country == HttpContext.Request.Query["SelectedCountries"])
-                  ?? new List<City>())
+    @{
+        var cities = Model?.Cities?.Cities;
+
+        if (HttpContext.Request.Query.ContainsKey("SelectedCountries"))
         {
-            <p>@city?.name</p>
-            <p>@city?.description</p>
+            cities = cities?.Where(c => HttpContext.Request.Query["SelectedCountries"].Any(selectedCountry => selectedCountry == c.country)).ToList();
         }
-    }
-    @* Otherwise show all items *@
-    else
-    {
-        @foreach (var city in Model?.Cities?.Cities ?? new List<City>())
+
+        foreach (var city in cities ?? new List<City>())
         {
             <p>@city?.name</p>
             <p>@city?.description</p>
@@ -60,10 +55,9 @@
 
 @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
 {
-    <a
-     asp-route-PageNumber="@(Model.Cities.Pagination.CurrentPage = i)"
-   asp-route-SelectedCountries="@HttpContext.Request.Query.FirstOrDefault(d => d.Key == "SelectedCountries").Value"
-   class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
+    <a asp-route-PageNumber="@(Model.Cities.Pagination.CurrentPage = i)"
+     asp-route-SelectedCountries="@HttpContext.Request.Query.FirstOrDefault(d => d.Key == "SelectedCountries").Value"
+     class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
         @i
     </a>
 }
@@ -74,27 +68,17 @@
         event.preventDefault();
     });
 
-    const paginationButtons = document.querySelectorAll(".paginationButtons");
-    paginationButtons.forEach(paginationButton => {
-        paginationButton.addEventListener('click', event => {
-            event.preventDefault();
+document.querySelectorAll('.paginationButtons').forEach(button => {
+  button.addEventListener('click', event => {
+    event.preventDefault();
 
-            // Clear old styles
-            for (let i = 0; i < paginationButtons.length; i++)
-            {
-                paginationButtons[i].classList.remove("active");
-            }
-
-            // Add new active button style for now selected page
-            event.currentTarget.classList.add("active");
-
-            // Fetch paginated data based on button value
-
-            // Clear old city items
-
-            // Update with new items
-        })
-    })
+    // Clear old styles
+    document.querySelectorAll('.paginationButtons').forEach(b => b.classList.remove('active'));
+    
+    // Add active to current targeted pagination element
+    event.currentTarget.classList.add('active');
+  });
+});
 
     let apiData;
 
