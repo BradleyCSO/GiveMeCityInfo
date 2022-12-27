@@ -1,6 +1,7 @@
 ﻿using GiveMeCityInfo.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using System.Web;
-using System.Xml.Linq;
 
 namespace GiveMeCityInfo.Services.GetApiService
 {
@@ -21,22 +22,47 @@ namespace GiveMeCityInfo.Services.GetApiService
 
             return cities;
         }
-
-        public static async Task<List<City>> GetCitiesByName(string? searchQuery)
+        public static async Task<List<string>> GetCountries()
         {
-            List<City> cities = new();
+            List<string> countries = new();
+
+            HttpResponseMessage response = await httpClient.GetAsync($"{baseUri}/GetCountries");
+
+            if (response.IsSuccessStatusCode)
+            {
+                countries = await response.Content.ReadFromJsonAsync<List<string>>() ?? new List<string>();
+            }
+
+            return countries;
+        }
+        public static async Task<PaginatedCities> GetCitiesByCountry([FromQuery] string[]? countries, [FromQuery] string pageNumber)
+        {
+            if (pageNumber == null)
+            {
+                pageNumber = "1";
+            }
+            PaginatedCities res = new();
 
             // Encode the query
             var query = HttpUtility.ParseQueryString(baseUri.Query);
-            query["searchQuery"] = searchQuery;
+
+            // Build query string
+            foreach (var country in countries)
+            {
+                query.Add("country", country);
+            }
+            query["pageNumber"] = pageNumber;
 
             HttpResponseMessage response = await httpClient.GetAsync($"{baseUri}?{query}");
             if (response.IsSuccessStatusCode)
             {
-                cities = await response.Content.ReadFromJsonAsync<List<City>>() ?? new List<City>();
+                res.Cities = await response.Content.ReadFromJsonAsync<List<City>>() ?? new List<City>();
+                
+                // Deserialise pagination header meta tag into PaginationDetails model
+                res.Pagination = JsonSerializer.Deserialize<PaginationDetails>(response?.Headers.GetValues("X-Pagination").FirstOrDefault());
             }
 
-            return cities;
+            return res;
         }
     }
 }

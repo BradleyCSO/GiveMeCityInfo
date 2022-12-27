@@ -2,18 +2,23 @@ using GiveMeCityInfo.Models;
 using GiveMeCityInfo.Services.GetApiService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.IO;
 
 namespace GiveMeCityInfo.Pages
 {
+    [BindProperties(SupportsGet = true)]
     public class CitiesModel : PageModel
     {
-        [BindProperty(SupportsGet = true)]
         public string? SearchQuery { get; set; }
-        public List<City>? Cities { get; set; }
-        public async Task OnGetAsync()
+        public PaginatedCities? Cities { get; set; }
+        public List<string>? Countries { get; set; }
+        public string[]? SelectedCountries { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
         {
-            Cities = await ApiService.GetCitiesByName(SearchQuery);
+            Cities = await ApiService.GetCitiesByCountry(SelectedCountries, Request.Query["PageNumber"]);
+            Countries = await ApiService.GetCountries();
+
+            return Page();
         }
     }
 }

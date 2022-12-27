@@ -1,12 +1,19 @@
-﻿const baseURI = 'https://localhost:7192/api/v2/cities';
+﻿const baseURI = 'https://localhost:7192/api/v2/cities/';
 
 // Get all cities
-function getCities() {
+function getCities(cb) {
     fetch(baseURI)
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => { return cb(data) })
         .catch(error => console.error('Unable to get cities.', error));
 }
+function getCitiesByCountry(country, cb) {
+    fetch(`${baseURI}?country=${country}`)
+        .then(response => response.json())
+        .then(data => { return data })
+        .catch(error => console.error('Unable to get cities.', error));
+}
+
 
 // Get one city by ID
 function getCityById(cityId) {
@@ -46,4 +53,11 @@ function getPointsOfInterest(pointOfInterestId) {
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(error => console.error(`No results found for city ${cityId} with point of interest id ${pointOfInterestId}.`, error));
+}
+
+function getCitiesByContinent(continentName, cb) {
+    return fetch(`${baseURI}?continent=${continentName}`)
+        .then(response => response.json())
+        .then(data => { return cb(data) })
+        .catch(error => console.error('Unable to get cities.', error));
 }
