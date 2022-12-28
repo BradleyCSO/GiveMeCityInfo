@@ -1,4 +1,4 @@
-﻿namespace GiveMeCityInfo.Services.GetApiService
+﻿namespace GiveMeCityInfo.Models
 {
     public class Country
     {
