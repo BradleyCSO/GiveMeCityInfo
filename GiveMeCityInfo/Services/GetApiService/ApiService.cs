@@ -22,15 +22,15 @@ namespace GiveMeCityInfo.Services.GetApiService
 
             return cities;
         }
-        public static async Task<List<string>> GetCountries()
+        public static async Task<List<Country>> GetCountries()
         {
-            List<string> countries = new();
+            List<Country> countries = new();
 
             HttpResponseMessage response = await httpClient.GetAsync($"{baseUri}/GetCountries");
 
             if (response.IsSuccessStatusCode)
             {
-                countries = await response.Content.ReadFromJsonAsync<List<string>>() ?? new List<string>();
+                countries = await response.Content.ReadFromJsonAsync<List<Country>>() ?? new List<Country>();
             }
 
             return countries;
@@ -47,7 +47,7 @@ namespace GiveMeCityInfo.Services.GetApiService
             var query = HttpUtility.ParseQueryString(baseUri.Query);
 
             // Build query string
-            foreach (var country in countries)
+            foreach (var country in countries ?? new string[0])
             {
                 query.Add("countries", country);
             }

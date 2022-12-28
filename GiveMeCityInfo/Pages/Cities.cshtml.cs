@@ -10,12 +10,12 @@ namespace GiveMeCityInfo.Pages
     {
         public string? SearchQuery { get; set; }
         public PaginatedCities? Cities { get; set; }
-        public List<string>? Countries { get; set; }
-        public string[]? SelectedCountries { get; set; }
+        public List<Country>? Countries { get; set; }
+        public List<string>? SelectedCountries { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            SelectedCountries = Request.Query["SelectedCountries"];
+            SelectedCountries = Request.Query["SelectedCountries"].ToList();
 
             var pageNumber = Request.Query["PageNumber"].FirstOrDefault() ?? "1";
             var selectedCountries = Request.Query["SelectedCountries"].ToArray();
