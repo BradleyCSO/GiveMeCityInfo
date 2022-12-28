@@ -1,21 +1,17 @@
 ﻿// Update HTML elements
 document.querySelector('#submit').remove();
 
-// Fetch data
-let apiData;
-
 let countryOptions = document.querySelectorAll("countries")
 
-fetch(`${baseURI}`).then(response => response.json()).then(data => {
-    apiData = data;
-    addContinentsCheckboxes(Array.from(apiData))
+fetch(`${baseURI}GetContinents`).then(response => response.json()).then(data => {
+    addContinentsCheckboxes(Array.from(data))
 }
-).catch(error => console.error('Unable to get cities.', error));
+).catch(error => console.error('Unable to get continents.', error));
 
 function addContinentsCheckboxes(continents) {
     for (const continent in continents) {
-        document.getElementsByClassName("continents")[0].innerHTML += `<label class="form-check-label">${continents[continent].continent}</label>`
-        document.getElementsByClassName("continents")[0].innerHTML += `<input type="checkbox" checked="checked" class="form-check-input" name="continent" id="continent" value="${continents[continent].continent}"</input>`
+        document.getElementsByClassName("continents")[0].innerHTML += `<label class="form-check-label">${continents[continent]}</label>`
+        document.getElementsByClassName("continents")[0].innerHTML += `<input type="checkbox" checked="checked" class="form-check-input" name="continent" id="continent" value="${continents[continent]}"</input>`
     }
 }
 
