@@ -64,5 +64,18 @@ namespace GiveMeCityInfo.Services.GetApiService
 
             return res;
         }
+
+        public static async Task<City> GetCityById([FromQuery] string cityId)
+        {
+            City res = new();
+
+            HttpResponseMessage response = await httpClient.GetAsync($"{baseUri}/{cityId}");
+            if (response.IsSuccessStatusCode)
+            {
+                res = await response.Content.ReadFromJsonAsync<City>() ?? new City();
+            }  
+
+            return res;
+        }
     }
 }
