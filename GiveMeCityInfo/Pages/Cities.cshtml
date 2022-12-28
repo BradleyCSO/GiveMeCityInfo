@@ -1,5 +1,6 @@
 ﻿@page
 @using GiveMeCityInfo.Models;
+@using Microsoft.AspNetCore.Http.Extensions
 @model GiveMeCityInfo.Pages.CitiesModel
 @{
     int pageNumber;
@@ -55,8 +56,16 @@
 
 @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
 {
-    <a asp-route-PageNumber="@(Model.Cities.Pagination.CurrentPage = i)"
-     asp-route-SelectedCountries="@HttpContext.Request.Query.FirstOrDefault(d => d.Key == "SelectedCountries").Value"
+    // Encode query
+    var query = new QueryBuilder();
+
+    foreach (var country in Model.SelectedCountries)
+    {
+        query.Add("SelectedCountries", country);
+    }
+    query.Add("PageNumber", i.ToString());
+
+    <a href="@query"
      class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
         @i
     </a>
