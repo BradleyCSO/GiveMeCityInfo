@@ -21,28 +21,18 @@ function addContinentsCheckboxes(continents) {
 
 // Event listeners
 document.addEventListener('click', function (e) {
-    // Update country list and city item elements based on continent selected
-    if (e.target.id == 'continent') {
+    // Update country list options based on selected continent value(s)
+    if (e.target.id == "continent") {
         // When continent changes, get values of all checked continent items and push them to array
         let continents = []
         document.querySelectorAll('input[type=checkbox]:checked').forEach(element => continents.push(element.value))
 
-        let results = []
+        // Get option HTML elements
+        const countriesSelected = document.querySelectorAll('.countries-select');
 
-        // Filter the results where city items match selected continent(s)
-        if (continents.length > 0) {
-            // Update option values based on selected continent(s)
-            results = apiData.filter(element => {
-                return continents.some(continent => element.continent.includes(continent))
-            }
-            )
-        }
-
-        // Clear old items
-        toggleChildNodes(document.querySelector('.countries-select'), results);
-
-        // Update the rendered HTML
-        //updateHtml(results)
+        countriesSelected.forEach(checkbox => {
+            toggleChildNodes(checkbox, continents);
+        });
     } else if (e.target.id == 'country') {
     }
     // Fetch paginated data providing value of selected page button element as parameter to API, update rendered elements accordingly
@@ -57,7 +47,7 @@ document.addEventListener('click', function (e) {
                 event.currentTarget.classList.add('active');
 
                 // Clear old items
-                removeAllChildNodes(document.querySelector('.city-items'));
+                //removeAllChildNodes(document.querySelector('.city-items'));
 
                 // Fetch new items provided page number
                 fetch(`${baseURI}?pageNumber=${event.currentTarget.innerText}`).then(response => response.json()).then(data => {
@@ -72,15 +62,16 @@ document.addEventListener('click', function (e) {
 });
 
 function toggleChildNodes(parent, filteredResults) {
-    // for (let child of parent.children) {     
-    //     console.log(filteredResults.includes(child.getAttribute("data-continent")))
-    //     if (filteredResults.includes(child.getAttribute("data-continent"))) {
-    //         child.style.display = "none;"
-    //     }
-    //     else {
-    //         child.style.display = "block";
-    //     }
-    // }
+    for (let child of parent.children) {
+        // Check if the value of the child element's data-continent attribute is present in the filteredResults array
+        if (filteredResults.includes(child.getAttribute('data-continent'))) {
+            // If it is, set the display property to show
+            child.style.display = "block";
+        } else {
+            // Otherwise set it not to display
+            child.style.display = "none";
+        }
+    }
 }
 
 function updateHtml(results, updateCountries) {
