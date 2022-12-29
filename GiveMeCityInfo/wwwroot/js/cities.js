@@ -90,17 +90,20 @@ function buildPaginationButtons(totalPageCount) {
     // Clear out old paginationButtons
     paginationButtonsContainer.innerHTML = '';
 
-    for (let i = 1; i <= totalPageCount; i++) {
-        const button = document.createElement('a');
+    // We only want the pagination buttons to show if there's more than one page
+    if (totalPageCount > 1) {
+        for (let i = 1; i <= totalPageCount; i++) {
+            const button = document.createElement('a');
 
-        button.innerHTML = `${i}`;
-        button.setAttribute('class', 'paginationButtons btn btn-default');
+            button.innerHTML = `${i}`;
+            button.setAttribute('class', 'paginationButtons btn btn-default');
 
-        paginationButtonsContainer.appendChild(button)
+            paginationButtonsContainer.appendChild(button);
+        }
+
+        // Set first page as active button 
+        document.querySelector('.paginationButtons').setAttribute('class', 'paginationButtons btn btn-default active');
     }
-
-    // Set first page as active button 
-    document.querySelector('.paginationButtons').setAttribute('class', 'paginationButtons btn btn-default active')
 }
 
 function toggleChildNodes(parent, filteredResults) {
