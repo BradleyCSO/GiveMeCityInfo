@@ -31,7 +31,14 @@ document.addEventListener('click', function (e) {
         }
         );
     } else if (e.target.id == 'country') {
-        const selectedCountries = [...e.target.options].filter(option => option.selected).map(option => option.value);
+        let selectedCountries;
+
+        if (Array.isArray(e.target.options)) {
+            selectedCountries = [...e.target.options].filter(option => option.selected).map(option => option.value);
+        } else {
+            selectedCountries = [e.target.value];
+        }
+
         const queryString = selectedCountries.map(country => `countries=${encodeURIComponent(country)}`).join('&');
 
         fetch(`${baseURI}?${queryString}`).then(response => {
@@ -97,7 +104,7 @@ function buildPaginationButtons(totalPageCount) {
 }
 
 function toggleChildNodes(parent, filteredResults) {
-    for (const child of parent.children) {
+    for (let child of parent.children) {
         // Check if the value of the child element's data-continent attribute is present in the filteredResults array
         if (filteredResults.includes(child.getAttribute('data-continent'))) {
             // If it is, set the display property to show
@@ -116,8 +123,8 @@ function removeAllChildNodes(parent) {
 }
 
 function updateCityCards(cities) {
-    for (const i = 0; i < cities.length; i++) {
-        const div = document.createElement('div');
+    for (let i = 0; i < cities.length; i++) {
+        let div = document.createElement('div');
         div.setAttribute('data-country', cities[i].country);
         div.innerHTML = `
             <p>${cities[i].name}</p>
