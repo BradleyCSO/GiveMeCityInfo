@@ -1,4 +1,7 @@
-﻿// Update HTML elements
+﻿// Base URL to query the API
+const baseURI = 'https://localhost:7192/api/v2/cities/';
+
+// Update HTML elements
 document.querySelector('#submit').remove();
 
 let selectedCountryOptions = []

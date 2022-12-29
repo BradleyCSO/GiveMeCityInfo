@@ -8,20 +8,32 @@ namespace GiveMeCityInfo.Pages
     [BindProperties(SupportsGet = true)]
     public class CitiesModel : PageModel
     {
+        private readonly ILogger _logger;
         public string? SearchQuery { get; set; }
         public PaginatedCities? Cities { get; set; }
         public List<Country>? Countries { get; set; }
         public List<string>? SelectedCountries { get; set; }
 
+        public CitiesModel(ILogger<CitiesModel> logger)
+        {
+            _logger = logger;
+        }
+
         public async Task<IActionResult> OnGetAsync()
         {
-            SelectedCountries = Request.Query["SelectedCountries"].ToList();
+            try
+            {
+                ApiService apiService = new();
+                var pageNumber = Request.Query["PageNumber"].FirstOrDefault() ?? "1";
+                var selectedCountries = Request.Query["SelectedCountries"].ToArray();
 
-            var pageNumber = Request.Query["PageNumber"].FirstOrDefault() ?? "1";
-            var selectedCountries = Request.Query["SelectedCountries"].ToArray();
-
-            Cities = await ApiService.GetCitiesByCountry(selectedCountries, pageNumber);
-            Countries = await ApiService.GetCountries();
+                Cities = await apiService.GetCitiesByCountry(selectedCountries, pageNumber);
+                Countries = await apiService.GetCountries();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+            }
 
             return Page();
         }

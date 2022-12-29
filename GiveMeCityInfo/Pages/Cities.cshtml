@@ -11,70 +11,83 @@
     }
 }
 
-<form method="get">
-    <!-- Continents -->
-    <div class="continents form-group">
-        <!-- JavaScript only functionality-->
-    </div>
+<div class="container-fluid">
+    @if (Model?.Cities?.Cities != null)
+    {
+        <form method="get">
+            <!-- Continents -->
+            <div class="continents form-group">
+                <!-- JavaScript only functionality-->
+            </div>
 
-    <!-- Countries -->
-    <div class="countries form-group">
-        <select multiple class="form-control countries-select" name="SelectedCountries" id="country">
-            @if (Model.SelectedCountries.Any())
-            {
-                foreach (var country in Model?.Countries?.Where(c => Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+            <!-- Countries -->
+            <div class="countries form-group">
+                <select multiple class="form-control countries-select" name="SelectedCountries" id="country">
+                    @if (Model?.SelectedCountries?.Any() ?? false)
+                    {
+                        foreach (var country in Model?.Countries?.Where(c => Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+                        {
+                            <option id="country" data-continent="@country.continent" selected="selected" value="@country.country">@country.country</option>
+                        }
+                    }
+                    @if (Model?.Countries?.Any() ?? false)
+                    {
+                        @foreach (var country in Model?.Countries?.Where(c => !Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+                        {
+                            <option id="country" data-continent="@country.continent" value="@country.country">@country.country</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <button id="submit" class="btn btn-primary" type="submit">Submit</button>
+        </form>
+
+        <div class="city-items">
+            @{
+                var cities = Model?.Cities?.Cities;
+
+                if (HttpContext.Request.Query.ContainsKey("SelectedCountries"))
                 {
-                    <option id="country" data-continent="@country.continent" selected="selected" value="@country.country">@country.country</option>
+                    cities = cities?.Where(c => HttpContext.Request.Query["SelectedCountries"].Any(selectedCountry => selectedCountry == c.country)).ToList();
+                }
+
+                foreach (var city in cities ?? new List<City>())
+                {
+                    <div data-country="@city.country">
+                        <p>@city?.name</p>
+                        <p>@city?.description</p>
+                        <button type="button" class="btn btn-secondary"><a href="/city?cityId=@city?.id">Page Example</a></button>
+                    </div>
                 }
             }
-            @foreach (var country in Model?.Countries?.Where(c => !Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+        </div>
+
+        <div class="pagination-buttons-container">
+            @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
             {
-                <option id="country" data-continent="@country.continent" value="@country.country">@country.country</option>
+                // Encode query
+                var query = new QueryBuilder();
+
+                foreach (var country in Model?.SelectedCountries ?? new List<string>())
+                {
+                    query.Add("SelectedCountries", country);
+                }
+                query.Add("PageNumber", i.ToString());
+
+                <a href="@query"
+                 class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
+                    @i
+                </a>
             }
-        </select>
-    </div>
-
-    <button id="submit" class="btn btn-primary" type="submit">Submit</button>
-</form>
-
-<div class="city-items container">
-    @{
-        var cities = Model?.Cities?.Cities;
-
-        if (HttpContext.Request.Query.ContainsKey("SelectedCountries"))
-        {
-            cities = cities?.Where(c => HttpContext.Request.Query["SelectedCountries"].Any(selectedCountry => selectedCountry == c.country)).ToList();
-        }
-
-        foreach (var city in cities ?? new List<City>())
-        {
-            <div data-country="@city.country">
-                <p>@city?.name</p>
-                <p>@city?.description</p>
-                <button type="button" class="btn btn-secondary"><a href="/city?cityId=@city?.id">Page Example</a></button>
-            </div>
-        }
+        </div>
     }
-</div>
-
-<div class="pagination-buttons-container">
-    @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
+    else
     {
-        // Encode query
-        var query = new QueryBuilder();
-
-        foreach (var country in Model.SelectedCountries)
-        {
-            query.Add("SelectedCountries", country);
-        }
-        query.Add("PageNumber", i.ToString());
-
-        <a href="@query"
-       class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
-            @i
-        </a>
+        <div class="alert alert-warning text-center" role="alert">
+            Sorry, this service is currently unavailable; please try again later.
+        </div>
     }
 </div>
 
-<script src="js/queryWebAPI.js" asp-append-version="true"></script>
 <script src="js/cities.js" asp-append-version="true"></script>

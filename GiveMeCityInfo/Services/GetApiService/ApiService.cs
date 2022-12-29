@@ -5,12 +5,12 @@ using System.Web;
 
 namespace GiveMeCityInfo.Services.GetApiService
 {
-    public static class ApiService
+    public class ApiService : IApiService
     {
-        static readonly UriBuilder baseUri = new("https://localhost:7192/api/v2/cities");
-        static readonly HttpClient httpClient = new();
+        private readonly UriBuilder baseUri = new("https://localhost:7192/api/v2/cities");
+        private readonly HttpClient httpClient = new();
 
-        public static async Task<List<City>> GetCities()
+        public async Task<List<City>> GetCities()
         {
             List<City> cities = new();
 
@@ -22,7 +22,8 @@ namespace GiveMeCityInfo.Services.GetApiService
 
             return cities;
         }
-        public static async Task<List<Country>> GetCountries()
+
+        public async Task<List<Country>> GetCountries()
         {
             List<Country> countries = new();
 
@@ -35,7 +36,8 @@ namespace GiveMeCityInfo.Services.GetApiService
 
             return countries;
         }
-        public static async Task<PaginatedCities> GetCitiesByCountry([FromQuery] string[]? countries, [FromQuery] string pageNumber)
+
+        public async Task<PaginatedCities> GetCitiesByCountry([FromQuery] string[]? countries, [FromQuery] string pageNumber)
         {
             if (pageNumber == null)
             {
@@ -57,15 +59,15 @@ namespace GiveMeCityInfo.Services.GetApiService
             if (response.IsSuccessStatusCode)
             {
                 res.Cities = await response.Content.ReadFromJsonAsync<List<City>>() ?? new List<City>();
-                
+
                 // Deserialise pagination header meta tag into PaginationDetails model
-                res.Pagination = JsonSerializer.Deserialize<PaginationDetails>(response?.Headers.GetValues("X-Pagination").FirstOrDefault());
+                res.Pagination = JsonSerializer.Deserialize<PaginationDetails>(response?.Headers?.GetValues("X-Pagination").FirstOrDefault() ?? "");
             }
 
             return res;
         }
 
-        public static async Task<City> GetCityById([FromQuery] string cityId)
+        public async Task<City> GetCityById([FromQuery] string cityId)
         {
             City res = new();
 
@@ -73,7 +75,7 @@ namespace GiveMeCityInfo.Services.GetApiService
             if (response.IsSuccessStatusCode)
             {
                 res = await response.Content.ReadFromJsonAsync<City>() ?? new City();
-            }  
+            }
 
             return res;
         }
