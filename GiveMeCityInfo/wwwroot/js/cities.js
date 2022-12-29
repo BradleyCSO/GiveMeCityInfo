@@ -33,7 +33,7 @@ document.addEventListener('click', function (e) {
     } else if (e.target.id == 'country') {
         let selectedCountries;
 
-        if (Array.isArray(e.target.options)) {
+        if (e.target.options) {
             selectedCountries = [...e.target.options].filter(option => option.selected).map(option => option.value);
         } else {
             selectedCountries = [e.target.value];
@@ -44,6 +44,7 @@ document.addEventListener('click', function (e) {
         fetch(`${baseURI}?${queryString}`).then(response => {
             // Get pagination header and convert it into a JSON object
             const xPaginationHeader = JSON.parse(response.headers.get("X-Pagination"));
+
             buildPaginationButtons(xPaginationHeader.TotalPageCount)
 
             return response.json();
@@ -73,8 +74,7 @@ document.addEventListener('click', function (e) {
 
                 // Fetch new items provided page number
                 fetch(`${baseURI}?pageNumber=${event.currentTarget.innerText}`).then(response => response.json()).then(data => {
-                    updateHtml(data)
-                    console.log(data)
+                    updateHtml(data);
                 }
                 ).catch(error => console.error('Unable to get cities.', error));
             }
