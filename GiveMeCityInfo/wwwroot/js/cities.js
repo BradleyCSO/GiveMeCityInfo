@@ -28,26 +28,46 @@ document.addEventListener('click', function (e) {
 
         countriesSelected.forEach(checkbox => {
             toggleChildNodes(checkbox, continents);
-        });
+        }
+        );
     } else if (e.target.id == 'country') {
-    }
-    // Fetch paginated data providing value of selected page button element as parameter to API, update rendered elements accordingly
+        const selectedCountries = [...e.target.options].filter(option => option.selected).map(option => option.value);
+        const queryString = selectedCountries.map(country => `countries=${encodeURIComponent(country)}`).join('&');
+
+        fetch(`${baseURI}?${queryString}`).then(response => {
+            // Get pagination header and convert it into a JSON object
+            const xPaginationHeader = JSON.parse(response.headers.get("X-Pagination"));
+            buildPaginationButtons(xPaginationHeader.TotalPageCount)
+
+            return response.json();
+        }
+        ).then(data => {
+            // Clear old items
+            removeAllChildNodes(document.querySelector('.city-items'));
+
+            // Update with new items
+            updateCityCards(data);
+        }
+        ).catch(error => console.error('Unable to get countries.', error));
+    }// Fetch paginated data providing value of selected page button element as parameter to API, update rendered elements accordingly
     else if (e.target.classList.contains('paginationButtons')) {
         e.preventDefault();
+
         document.querySelectorAll('.paginationButtons').forEach(button => {
             button.addEventListener('click', event => {
                 // Clear old styles
-                document.querySelectorAll('.paginationButtons').forEach(b => b.classList.remove('active'));
+                button.remove('active');
 
                 // Add active to current targeted pagination element
                 event.currentTarget.classList.add('active');
 
                 // Clear old items
-                //removeAllChildNodes(document.querySelector('.city-items'));
+                removeAllChildNodes(document.querySelector('.city-items'));
 
                 // Fetch new items provided page number
                 fetch(`${baseURI}?pageNumber=${event.currentTarget.innerText}`).then(response => response.json()).then(data => {
-                    //updateHtml(data)
+                    updateHtml(data)
+                    console.log(data)
                 }
                 ).catch(error => console.error('Unable to get cities.', error));
             }
@@ -57,8 +77,27 @@ document.addEventListener('click', function (e) {
     }
 });
 
+function buildPaginationButtons(totalPageCount) {
+    const paginationButtonsContainer = document.querySelector('.pagination-buttons-container');
+
+    // Clear out old paginationButtons
+    paginationButtonsContainer.innerHTML = '';
+
+    for (let i = 1; i <= totalPageCount; i++) {
+        const button = document.createElement('a');
+
+        button.innerHTML = `${i}`;
+        button.setAttribute('class', 'paginationButtons btn btn-default');
+
+        paginationButtonsContainer.appendChild(button)
+    }
+
+    // Set first page as active button 
+    document.querySelector('.paginationButtons').setAttribute('class', 'paginationButtons btn btn-default active')
+}
+
 function toggleChildNodes(parent, filteredResults) {
-    for (let child of parent.children) {
+    for (const child of parent.children) {
         // Check if the value of the child element's data-continent attribute is present in the filteredResults array
         if (filteredResults.includes(child.getAttribute('data-continent'))) {
             // If it is, set the display property to show
@@ -70,9 +109,23 @@ function toggleChildNodes(parent, filteredResults) {
     }
 }
 
-function updateHtml(results, updateCountries) {
-    for (let i = 0; i < results.length; i++) {
-        document.getElementsByClassName('countries-select')[0].innerHTML += `<option value=${results[i].country} class='form-check-label'>${results[i].country}</option>`
-        document.getElementsByClassName('city-items')[0].innerHTML += `<p>${results[i].name}</p>`
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+function updateCityCards(cities) {
+    for (const i = 0; i < cities.length; i++) {
+        const div = document.createElement('div');
+        div.setAttribute('data-country', cities[i].country);
+        div.innerHTML = `
+            <p>${cities[i].name}</p>
+            <p>${cities[i].description}</p>
+            <button type="button" class="btn btn-secondary">
+                <a href="/city?cityId=${cities[i].id}">Button</a>
+            </button>
+            `;
+        document.querySelector('.city-items').appendChild(div);
     }
 }

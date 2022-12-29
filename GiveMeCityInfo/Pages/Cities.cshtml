@@ -48,29 +48,33 @@
 
         foreach (var city in cities ?? new List<City>())
         {
-            <p>@city?.name</p>
-            <p>@city?.description</p>
-            <button type="button" class="btn btn-secondary"><a href="/city?cityId=@city?.id">Page Example</a></button>
+            <div data-country="@city.country">
+                <p>@city?.name</p>
+                <p>@city?.description</p>
+                <button type="button" class="btn btn-secondary"><a href="/city?cityId=@city?.id">Page Example</a></button>
+            </div>
         }
     }
 </div>
 
-@for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
-{
-    // Encode query
-    var query = new QueryBuilder();
-
-    foreach (var country in Model.SelectedCountries)
+<div class="pagination-buttons-container">
+    @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
     {
-        query.Add("SelectedCountries", country);
-    }
-    query.Add("PageNumber", i.ToString());
+        // Encode query
+        var query = new QueryBuilder();
 
-    <a href="@query"
-   class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
-        @i
-    </a>
-}
+        foreach (var country in Model.SelectedCountries)
+        {
+            query.Add("SelectedCountries", country);
+        }
+        query.Add("PageNumber", i.ToString());
+
+        <a href="@query"
+       class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
+            @i
+        </a>
+    }
+</div>
 
 <script src="js/queryWebAPI.js" asp-append-version="true"></script>
 <script src="js/cities.js" asp-append-version="true"></script>
