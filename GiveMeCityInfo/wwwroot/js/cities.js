@@ -53,11 +53,11 @@ document.addEventListener('click', function (e) {
         }
         ).catch(error => console.error('Unable to get countries.', error));
     }// Fetch paginated data providing value of selected page button element as parameter to API, update rendered elements accordingly
-    else if (e.target.classList.contains('paginationButtons')) {
+    else if (e.target.classList.contains('page-link')) {
         e.preventDefault();
 
         // Clear old active style
-        document.querySelectorAll('.paginationButtons').forEach(button => {
+        document.querySelectorAll('.page-link').forEach(button => {
             button.classList.remove('active');
         });
 
@@ -96,16 +96,24 @@ function buildPaginationButtons(totalPageCount) {
     // We only want the pagination buttons to show if there's more than one page
     if (totalPageCount > 1) {
         for (let i = 1; i <= totalPageCount; i++) {
-            const button = document.createElement('a');
+            const ul = document.createElement('ul');
+            ul.setAttribute('class', 'd-inline-flex m-1 pagination');
 
-            button.innerHTML = `${i}`;
-            button.setAttribute('class', 'paginationButtons btn btn-default');
+            const li = document.createElement('li');
+            li.setAttribute('class', 'page-item');
+                
+            const a = document.createElement('a');
+            a.innerHTML = `${i}`;
+            a.setAttribute('class', 'page-link');
 
-            paginationButtonsContainer.appendChild(button);
+            ul.appendChild(li);
+            li.appendChild(a);
+
+            paginationButtonsContainer.appendChild(ul);
         }
 
         // Set first page as active button 
-        document.querySelector('.paginationButtons').setAttribute('class', 'paginationButtons btn btn-default active');
+        document.querySelector('.page-link').setAttribute('class', 'page-link active');
     }
 }
 
@@ -134,14 +142,38 @@ function updateCityCards(cities) {
 
     for (let i = 0; i < cities.length; i++) {
         let div = document.createElement('div');
+        div.classList.add('me-1', 'text-center', 'card');
         div.setAttribute('data-country', cities[i].country);
-        div.innerHTML = `
-            <p>${cities[i].name}</p>
-            <p>${cities[i].description}</p>
-            <button type="button" class="btn btn-secondary">
-                <a href="/city?cityId=${cities[i].id}">Button</a>
-            </button>
-            `;
+
+        let img = document.createElement('img');
+        img.classList.add('card__img');
+        img.setAttribute('src', cities[i].imageUrl);
+        img.setAttribute('alt', cities[i].imageAltText);
+
+        let cardImgOverlay = document.createElement('div');
+        cardImgOverlay.classList.add('card-img-overlay');
+
+        let cardTitle = document.createElement('h5');
+        cardTitle.classList.add('card-title', 'card__text', 'text-white');
+        cardTitle.textContent = cities[i].name;
+
+        let a = document.createElement('a');
+        a.classList.add('stretched-link');
+        a.setAttribute('href', '/city?cityId=' + cities[i].id);
+
+        // Append <h5> element which contains city name to the cardImgOverlay div
+        cardImgOverlay.appendChild(cardTitle);
+
+        // Append <a> element which contains href attribute linking a City inside cardImgOverlay div
+        cardImgOverlay.appendChild(a);
+
+        // Append img which contains url and alt text for a given city
+        div.appendChild(img);
+
+        // Append the img overlay to the div
+        div.appendChild(cardImgOverlay);
+
+        // Append the created card div to the city-items container
         document.querySelector('.city-items').appendChild(div);
     }
 }

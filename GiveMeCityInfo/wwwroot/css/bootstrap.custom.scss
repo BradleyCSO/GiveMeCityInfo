@@ -1,1 +1,7 @@
 ﻿@import "../lib/bootstrap/scss/bootstrap.scss";
+
+/*#region Links */
+.page-item:hover {
+    cursor: pointer;
+}
+/*#endregion Links*/

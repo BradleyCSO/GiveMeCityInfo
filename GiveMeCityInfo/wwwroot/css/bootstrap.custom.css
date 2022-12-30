@@ -10769,3 +10769,9 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+/*#region Links */
+.page-item:hover {
+  cursor: pointer;
+}
+
+/*#endregion Links*/

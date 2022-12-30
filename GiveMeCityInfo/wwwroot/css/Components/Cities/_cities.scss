@@ -1,4 +1,5 @@
-﻿.card {
+﻿/*#region Cards*/
+.card {
     background: black;
 
     &::before,
@@ -53,3 +54,4 @@
 .card:hover .card__text {
     opacity: 1;
 }
+/*#endregion Cards*/

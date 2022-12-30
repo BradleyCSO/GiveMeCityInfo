@@ -58,7 +58,7 @@
                     foreach (var city in cities ?? new List<City>())
                     {
                         <div class="me-1 text-center card" data-country="@city.country">
-                            <img class="card__img" src="@city.imageUrl" alt="@city.imageAltText">
+                            <img loading="lazy" class="card__img" src="@city.imageUrl" alt="@city.imageAltText">
                             <div class="card-img-overlay">
                                 <h5 class="card-title card__text text-white">@city?.name</h5>
                                 <a href="/city?cityId=@city?.id" class="stretched-link"></a>
