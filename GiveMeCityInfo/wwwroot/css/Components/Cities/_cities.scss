@@ -1,0 +1,55 @@
+﻿.card {
+    background: black;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 1.25em 1.25em 1.25em 1.25em;
+        opacity: 1;
+        transition: transform ease-out 250ms;
+    }
+
+    &::before {
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+        border-radius: 20px;
+        transform: scale(0,1);
+    }
+
+    &::after {
+        border-left: 1px solid white;
+        border-right: 1px solid white;
+        border-radius: 20px;
+        transform: scale(1, 0);
+    }
+
+    &:hover::before, &:hover::after {
+        transform: scale(1, 1);
+    }
+}
+
+.card__img {
+    transition: opacity ease-out 250ms;
+}
+
+.card:hover {
+    cursor: pointer;
+    .card__img {
+        opacity: .4;
+    }
+}
+
+.card__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    opacity: 0;
+    transition: opacity ease-out 300ms;
+}
+
+.card:hover .card__text {
+    opacity: 1;
+}

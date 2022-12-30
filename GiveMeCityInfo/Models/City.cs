@@ -7,5 +7,7 @@
         public string? description { get; set; }
         public string? continent { get; set; }
         public string? country { get; set; }
+        public string? imageUrl { get; set; }
+        public string? imageAltText { get; set; }
     }
 }

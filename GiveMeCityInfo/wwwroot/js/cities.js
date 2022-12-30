@@ -2,7 +2,7 @@
 const baseURI = 'https://localhost:7192/api/v2/cities/';
 
 // Update HTML elements
-document.querySelector('#submit').remove();
+document.querySelector('button[type="submit"]').remove();
 
 let selectedCountryOptions = []
 

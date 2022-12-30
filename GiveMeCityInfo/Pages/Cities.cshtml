@@ -11,75 +11,86 @@
     }
 }
 
-<div class="container-fluid">
+<div class="row">
     @if (Model?.Cities?.Cities != null)
     {
-        <form method="get">
-            <!-- Continents -->
+        <div class="col-4">
+            <form method="get">
+                <!-- Continents -->
             <div class="continents form-group">
                 <!-- JavaScript only functionality-->
             </div>
 
-            <!-- Countries -->
+                <!-- Countries -->
             <div class="countries form-group">
-                <select multiple class="form-control countries-select" name="SelectedCountries" id="country">
-                    @if (Model?.SelectedCountries?.Any() ?? false)
-                    {
-                        foreach (var country in Model?.Countries?.Where(c => Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+                    <select multiple class="form-control countries-select" name="SelectedCountries" id="country">
+                        @if (Model?.SelectedCountries?.Any() ?? false)
                         {
-                            <option id="country" data-continent="@country.continent" selected="selected" value="@country.country">@country.country</option>
+                            foreach (var country in Model?.Countries?.Where(c => Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+                            {
+                                <option id="country" data-continent="@country.continent" selected="selected" value="@country.country">@country.country</option>
+                            }
                         }
-                    }
-                    @if (Model?.Countries?.Any() ?? false)
-                    {
-                        @foreach (var country in Model?.Countries?.Where(c => !Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+                        @if (Model?.Countries?.Any() ?? false)
                         {
-                            <option id="country" data-continent="@country.continent" value="@country.country">@country.country</option>
+                            @foreach (var country in Model?.Countries?.Where(c => !Model.SelectedCountries.Contains(c.country)) ?? new List<Country>())
+                            {
+                                <option id="country" data-continent="@country.continent" value="@country.country">@country.country</option>
+                            }
                         }
-                    }
-                </select>
-            </div>
+                    </select>
+                </div>
 
-            <button id="submit" class="btn btn-primary" type="submit">Submit</button>
-        </form>
-
-        <div class="city-items">
-            @{
-                var cities = Model?.Cities?.Cities;
-
-                if (HttpContext.Request.Query.ContainsKey("SelectedCountries"))
-                {
-                    cities = cities?.Where(c => HttpContext.Request.Query["SelectedCountries"].Any(selectedCountry => selectedCountry == c.country)).ToList();
-                }
-
-                foreach (var city in cities ?? new List<City>())
-                {
-                    <div data-country="@city.country">
-                        <p>@city?.name</p>
-                        <p>@city?.description</p>
-                        <button type="button" class="btn btn-secondary"><a href="/city?cityId=@city?.id">Page Example</a></button>
-                    </div>
-                }
-            }
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
         </div>
 
-        <div class="pagination-buttons-container">
-            @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
-            {
-                // Encode query
-                var query = new QueryBuilder();
+        <div class="col-8">
+            <div class="card-group city-items">
+                @{
+                    var cities = Model?.Cities?.Cities;
 
-                foreach (var country in Model?.SelectedCountries ?? new List<string>())
-                {
-                    query.Add("SelectedCountries", country);
+                    if (HttpContext.Request.Query.ContainsKey("SelectedCountries"))
+                    {
+                        cities = cities?.Where(c => HttpContext.Request.Query["SelectedCountries"].Any(selectedCountry => selectedCountry == c.country)).ToList();
+                    }
+
+                    foreach (var city in cities ?? new List<City>())
+                    {
+                        <div class="me-1 text-center card" data-country="@city.country">
+                            <img class="card__img" src="@city.imageUrl" alt="@city.imageAltText">
+                            <div class="card-img-overlay">
+                                <h5 class="card-title card__text text-white">@city?.name</h5>
+                                <a href="/city?cityId=@city?.id" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    }
                 }
-                query.Add("PageNumber", i.ToString());
+            </div>
 
-                <a href="@query"
-                 class="paginationButtons btn btn-default @(i == pageNumber ? "active" : string.Empty)">
-                    @i
-                </a>
-            }
+            <div class="pagination-buttons-container mt-5 text-center">
+                <nav aria-label="Pagination">
+                    @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
+                    {
+                        // Encode query
+                        var query = new QueryBuilder();
+
+                        foreach (var country in Model?.SelectedCountries ?? new List<string>())
+                        {
+                            query.Add("SelectedCountries", country);
+                        }
+                        query.Add("PageNumber", i.ToString());
+
+                        <ul class="d-inline-flex m-1 pagination">
+                            <li class="page-item">
+                                <a href="@query" class="page-link @(i == pageNumber ? "active" : string.Empty)">
+                                    @i
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </nav>
+            </div>
         </div>
     }
     else
@@ -91,3 +102,4 @@
 </div>
 
 <script src="js/cities.js" asp-append-version="true"></script>
+<link rel="stylesheet" href="~/css/Components/Cities/_cities.min.css" />
