@@ -14,14 +14,14 @@
 <div class="row">
     @if (Model?.Cities?.Cities != null)
     {
-        <div class="col-sm">
+        <div class="col-md-3">
             <form method="get">
                 <!-- Continents -->
             <div class="continents text-center form-group">
                 <!-- JavaScript only functionality-->
             </div>
 
-                <!-- Countries -->
+            <!-- Countries -->
             <div class="countries form-group">
                     <select multiple class="form-control countries-select" name="SelectedCountries" id="country">
                         @if (Model?.SelectedCountries?.Any() ?? false)
@@ -41,11 +41,11 @@
                     </select>
                 </div>
 
-                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn btn-primary mt-2" type="submit">Search</button>
             </form>
         </div>
 
-        <div class="col-sm">
+        <div class="mt-2 col-md-9">
             <div class="card-group city-items">
                 @{
                     var cities = Model?.Cities?.Cities;
@@ -57,7 +57,7 @@
 
                     foreach (var city in cities ?? new List<City>())
                     {
-                        <div class="me-1 text-center card" data-country="@city.country">
+                        <div class="text-center card" data-country="@city.country">
                             <img loading="lazy" class="card__img" src="@city.imageUrl" alt="@city.imageAltText">
                             <div class="card-img-overlay">
                                 <h5 class="card-title card__text text-white">@city?.name</h5>

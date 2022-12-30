@@ -78,7 +78,7 @@ document.addEventListener('click', function (e) {
 
 function addContinentsCheckboxes(continents) {
     for (const continent in continents) {
-        document.getElementsByClassName('continents')[0].innerHTML += `<label class="form-check-label">${continents[continent]}</label>`
+        document.getElementsByClassName('continents')[0].innerHTML += `<label class="mb-2 form-check-label">${continents[continent]}</label>`
         document.getElementsByClassName('continents')[0].innerHTML += `<input type="checkbox" checked="checked" class="form-check-input me-4" name="continent" id="continent" value="${continents[continent]}"</input>`
     }
 }
@@ -142,7 +142,7 @@ function updateCityCards(cities) {
 
     for (let i = 0; i < cities.length; i++) {
         let div = document.createElement('div');
-        div.classList.add('me-1', 'text-center', 'card');
+        div.classList.add('text-center', 'card');
         div.setAttribute('data-country', cities[i].country);
 
         let img = document.createElement('img');
