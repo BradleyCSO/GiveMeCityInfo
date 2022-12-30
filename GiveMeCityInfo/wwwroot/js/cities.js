@@ -79,7 +79,7 @@ document.addEventListener('click', function (e) {
 function addContinentsCheckboxes(continents) {
     for (const continent in continents) {
         document.getElementsByClassName('continents')[0].innerHTML += `<label class="form-check-label">${continents[continent]}</label>`
-        document.getElementsByClassName('continents')[0].innerHTML += `<input type="checkbox" checked="checked" class="form-check-input" name="continent" id="continent" value="${continents[continent]}"</input>`
+        document.getElementsByClassName('continents')[0].innerHTML += `<input type="checkbox" checked="checked" class="form-check-input me-4" name="continent" id="continent" value="${continents[continent]}"</input>`
     }
 }
 

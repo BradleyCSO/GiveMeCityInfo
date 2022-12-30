@@ -14,10 +14,10 @@
 <div class="row">
     @if (Model?.Cities?.Cities != null)
     {
-        <div class="col-4">
+        <div class="col-sm">
             <form method="get">
                 <!-- Continents -->
-            <div class="continents form-group">
+            <div class="continents text-center form-group">
                 <!-- JavaScript only functionality-->
             </div>
 
@@ -45,7 +45,7 @@
             </form>
         </div>
 
-        <div class="col-8">
+        <div class="col-sm">
             <div class="card-group city-items">
                 @{
                     var cities = Model?.Cities?.Cities;
