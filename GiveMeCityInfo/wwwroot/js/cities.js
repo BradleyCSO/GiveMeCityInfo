@@ -142,7 +142,7 @@ function updateCityCards(cities) {
 
     for (let i = 0; i < cities.length; i++) {
         let div = document.createElement('div');
-        div.classList.add('text-center', 'card');
+        div.classList.add('text-center', 'card', 'border-0');
         div.setAttribute('data-country', cities[i].country);
 
         let img = document.createElement('img');

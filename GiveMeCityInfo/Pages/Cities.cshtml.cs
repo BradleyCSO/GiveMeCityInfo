@@ -9,7 +9,6 @@ namespace GiveMeCityInfo.Pages
     public class CitiesModel : PageModel
     {
         private readonly ILogger _logger;
-        public string? SearchQuery { get; set; }
         public PaginatedCities? Cities { get; set; }
         public List<Country>? Countries { get; set; }
         public List<string>? SelectedCountries { get; set; }

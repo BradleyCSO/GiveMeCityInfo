@@ -57,7 +57,7 @@
 
                     foreach (var city in cities ?? new List<City>())
                     {
-                        <div class="text-center card" data-country="@city.country">
+                        <div class="text-center card border-0" data-country="@city.country">
                             <img loading="lazy" class="card__img" src="@city.imageUrl" alt="@city.imageAltText">
                             <div class="card-img-overlay">
                                 <h5 class="card-title card__text text-white">@city?.name</h5>
@@ -95,9 +95,7 @@
     }
     else
     {
-        <div class="alert alert-warning text-center" role="alert">
-            Sorry, this service is currently unavailable; please try again later.
-        </div>
+        <partial name="/Pages/Partials/_ServiceUnavailable.cshtml" />
     }
 </div>
 
