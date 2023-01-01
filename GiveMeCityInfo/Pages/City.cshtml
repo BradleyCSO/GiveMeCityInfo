@@ -1,6 +1,12 @@
 ﻿@page
 @model GiveMeCityInfo.Pages.CityModel
-@{
-}
 
-<h1>Hello @Model?.City?.name</h1>
+<h1>Hello @Model?.City?.name!</h1>
+
+<div class="city-image-grid">
+    <img src="@Model.City.imageUrl" class="city-image-grid-item large">
+    <img src="@Model.City.imageUrl" class="city-image-grid-item">
+    <img src="@Model.City.imageUrl" class="city-image-grid-item">
+</div>
+
+<link rel="stylesheet" href="~/css/Components/City/_city.min.css" />

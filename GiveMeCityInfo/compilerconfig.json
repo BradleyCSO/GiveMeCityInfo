@@ -26,5 +26,9 @@
   {
     "outputFile": "wwwroot/css/Components/SearchResults/_SearchResults.css",
     "inputFile": "wwwroot/css/Components/SearchResults/_SearchResults.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/Components/ServiceUnavailable/_ServiceUnavailable.css",
+    "inputFile": "wwwroot/css/Components/ServiceUnavailable/_ServiceUnavailable.scss"
   }
 ]
