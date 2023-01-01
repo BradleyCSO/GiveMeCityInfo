@@ -1,0 +1,44 @@
+﻿@import "../../../lib/bootstrap/scss/_nav.scss";
+@import "../../../lib/bootstrap/scss/_navbar.scss";
+@import "../../../lib/bootstrap/scss/_transitions.scss";
+@import "../../../lib/bootstrap/scss/_containers.scss";
+@import "../../../lib/bootstrap/scss/utilities/_api.scss";
+
+/*#region General*/
+html {
+    scroll-behavior: smooth;
+}
+/*#endregion General*/
+/*#region Media Queries*/
+/*@include media-breakpoint-down(sm) {
+    .flex-content a {
+        border-right: none !important;
+    }
+}*/
+/*#endregion Media Queries*/
+
+/*#region Links */
+.page-item:hover {
+    cursor: pointer;
+}
+/*#endregion Links*/
+
+.nav-main, footer {
+    background-color: midnightblue;
+}
+
+.nav-main ul > li {
+    border-right: 2px solid salmon;
+}
+
+.nav-main ul > li:hover {
+    background: salmon;
+}
+
+.navbar-toggler-icon {
+    color: salmon;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}

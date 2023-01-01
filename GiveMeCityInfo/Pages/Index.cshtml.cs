@@ -9,11 +9,6 @@ namespace GiveMeCityInfo.Pages
         [BindProperty]
         public Search? Search { get; set; }
 
-        public void OnGet()
-        {
-
-        }
-
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
@@ -21,7 +16,7 @@ namespace GiveMeCityInfo.Pages
                 return Page();
             }
 
-            return RedirectToPage("/Cities", new { Search?.SearchQuery });
+            return RedirectToPage("/SearchResults", new { Search?.SearchQuery });
         }
     }
 }
