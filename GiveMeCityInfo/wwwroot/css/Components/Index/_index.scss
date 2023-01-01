@@ -74,13 +74,10 @@ html, body {
     }
 }
 
-
 /*#region Media Queries*/
 @include media-breakpoint-down(sm) {
     .flex-content a {
         border-right: none !important;
     }
 }
-
-
 /*#endregion Media Queries*/
