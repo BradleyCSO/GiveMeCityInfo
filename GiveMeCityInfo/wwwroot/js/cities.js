@@ -159,7 +159,7 @@ function updateCityCards(cities) {
 
         let a = document.createElement('a');
         a.classList.add('stretched-link');
-        a.setAttribute('href', '/city?cityId=' + cities[i].id);
+        a.setAttribute('href', '/City?cityId=' + cities[i].id);
 
         // Append <h5> element which contains city name to the cardImgOverlay div
         cardImgOverlay.appendChild(cardTitle);

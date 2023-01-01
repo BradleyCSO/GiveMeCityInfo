@@ -17,7 +17,7 @@
     <div class="list-group">
         @foreach (var city in Model.Cities.Cities ?? new List<City>())
         {
-            <a href="/city?cityId=@city?.id" class="p-4 list-group-item list-group-item-action nav-item">
+            <a href="/City?cityId=@city?.id" class="p-4 list-group-item list-group-item-action nav-item">
                 @city?.name
                 <span class="ms-2 badge bg-primary nav-tabs">@city?.country</span>
                 <span class="ms-2 badge bg-primary nav-tabs">@city?.continent</span>
