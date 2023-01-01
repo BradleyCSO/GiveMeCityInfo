@@ -15,15 +15,16 @@
 <div id="background-split"></div>
 <div id="background-split2"></div>
 
-<form method="post">
-    <label for="" class="form-label">Location</label>
-    <input type="text" asp-for="Search.SearchQuery" placeholder="Please enter a location" />
-    <button class="btn btn-primary "type="submit">Submit</button>
+<!-- Search City Location Form -->
+<form class="bg-transparent form-floating position-absolute top-50 start-50 ms-5" method="post">
+    <input type="text" class="form-control" id="city-search" asp-for="Search.SearchQuery" placeholder="Please enter a city" />
+    <label for="city-search" class="form-label">City search</label>
+    <button class="btn btn-primary" type="submit" hidden>Submit</button>
 </form>
 
 
 <h1>Continents</h1>
-
+<script src="js/searchAutoComplete.js" asp-append-version="true"></script>
 <h1>Activities</h1>
 
 <style>
