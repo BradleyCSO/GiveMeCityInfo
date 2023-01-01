@@ -1,0 +1,86 @@
+﻿@import "../../bootstrap.required.scss";
+@import "../../../lib/bootstrap/scss/_forms.scss";
+@import "../../../lib/bootstrap/scss/_list-group.scss";
+@import "../../../lib/bootstrap/scss/_carousel.scss";
+@import "../../../lib/bootstrap/scss/_root.scss";
+@import "../../../lib/bootstrap/scss/_reboot.scss";
+
+html, body {
+    overflow-x: hidden;
+}
+
+.carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+
+    .carousel-inner img {
+        height: 100vh;
+        width: 100vw;
+        object-fit: cover;
+    }
+}
+
+#background-split {
+    z-index: -1;
+    position: absolute;
+    height: 100vh;
+    top: 0;
+    width: 50vw;
+    left: 50vw;
+    background: grey;
+    opacity: 0.4;
+    border-left: 15px groove salmon;
+}
+
+.flex-content {
+    background-color: midnightblue !important;
+    width: 100vw;
+
+    a {
+        transition: all 0 .8s ease;
+        color: white;
+        width: 100vw;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 1.3rem;
+        border-top: 2px solid salmon;
+    }
+
+    a:not(:last-child) {
+        border-right: 2px solid salmon;
+    }
+
+    a:link, a:visited {
+        color: #FFFFFF;
+        text-decoration: none;
+    }
+
+    a:hover {
+        background-color: salmon;
+    }
+
+    a img {
+        transition: transform .5s;
+        width: 100px;
+        height: 100px;
+    }
+
+    a:hover img {
+        transform: scale(1.2);
+    }
+}
+
+
+/*#region Media Queries*/
+@include media-breakpoint-down(sm) {
+    .flex-content a {
+        border-right: none !important;
+    }
+}
+
+
+/*#endregion Media Queries*/

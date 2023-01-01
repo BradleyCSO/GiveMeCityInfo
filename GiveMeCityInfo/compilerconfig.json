@@ -10,5 +10,21 @@
   {
     "outputFile": "wwwroot/css/Components/Cities/_cities.css",
     "inputFile": "wwwroot/css/Components/Cities/_cities.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/Components/Index/_index.css",
+    "inputFile": "wwwroot/css/Components/Index/_index.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/Components/City/_city.css",
+    "inputFile": "wwwroot/css/Components/City/_city.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/Components/Layout/_layout.css",
+    "inputFile": "wwwroot/css/Components/Layout/_layout.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/Components/SearchResults/_SearchResults.css",
+    "inputFile": "wwwroot/css/Components/SearchResults/_SearchResults.scss"
   }
 ]

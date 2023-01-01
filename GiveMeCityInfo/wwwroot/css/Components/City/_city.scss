@@ -1,0 +1,19 @@
+﻿@import "../../bootstrap.required.scss";
+@import "../../../lib/bootstrap/scss/_reboot.scss";
+@import "../../../lib/bootstrap/scss/_root.scss";
+
+/*#region City Grid*/
+.city-image-grid {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    height: 70vh;
+    gap: 1vh;
+}
+
+.city-image-grid-item {
+    &.large {
+        grid-row: span 2;
+    }
+}
+/*#endregion City Grid*/
