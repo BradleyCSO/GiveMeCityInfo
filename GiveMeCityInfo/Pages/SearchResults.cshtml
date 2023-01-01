@@ -1,7 +1,15 @@
 ﻿@page
 @using GiveMeCityInfo.Models;
+@using Microsoft.AspNetCore.Http.Extensions;
 @model GiveMeCityInfo.Pages.SearchResultsModel
+@{
+    int pageNumber;
 
+    if (!int.TryParse(Model.Request.Query?["PageNumber"], out pageNumber))
+    {
+        pageNumber = 1;
+    }
+}
 @if (Model?.Cities?.Cities != null)
 {
     <form class="mt-2 bg-transparent form-floating" method="get">
@@ -11,7 +19,7 @@
     </form>
 
     <div class="mt-4 alert alert-primary" role="alert">
-        @Model.Cities.Cities.Count() result(s) found for "@Model.SearchQuery"
+        @Model.Cities.Pagination.TotalItemCount result(s) found for "@Model.SearchQuery"
     </div>
 
     <div class="list-group">
@@ -24,7 +32,26 @@
             </a>
         }
     </div>
+    <div class="mt-5 text-center">
+        <nav aria-label="Pagination">
+            @for (int i = 1; i <= Model?.Cities?.Pagination?.TotalPageCount; i++)
+            {
+                // Encode query
+                var query = new QueryBuilder();
 
+                query.Add("SearchQuery", Request.Query["SearchQuery"].ToString());
+                query.Add("PageNumber", i.ToString());
+
+                <ul class="d-inline-flex m-1 pagination">
+                    <li class="page-item">
+                        <a href="@query" class="page-link @(i == pageNumber ? "active" : string.Empty)">
+                            @i
+                        </a>
+                    </li>
+                </ul>
+            }
+        </nav>
+    </div>
 }
 else
 {

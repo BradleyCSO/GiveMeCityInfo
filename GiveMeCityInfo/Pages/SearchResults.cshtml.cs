@@ -22,7 +22,9 @@ namespace GiveMeCityInfo.Pages
             try
             {
                 ApiService apiService = new();
-                Cities = await apiService.GetFuzzyCities(SearchQuery);
+                var pageNumber = Request.Query["PageNumber"].FirstOrDefault() ?? "1";
+
+                Cities = await apiService.GetFuzzyCities(SearchQuery, pageNumber);
             }
             catch (Exception ex)
             {

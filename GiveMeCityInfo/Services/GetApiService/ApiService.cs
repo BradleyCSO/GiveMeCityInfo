@@ -23,19 +23,23 @@ namespace GiveMeCityInfo.Services.GetApiService
             return cities;
         }
 
-        public async Task<PaginatedCities> GetFuzzyCities([FromQuery] string? searchQuery)
+        public async Task<PaginatedCities> GetFuzzyCities([FromQuery] string? searchQuery, string? pageNumber)
         {
             PaginatedCities res = new();
 
             // Encode the query
             var query = HttpUtility.ParseQueryString(baseUri.Query);
             query.Add("searchQuery", searchQuery);
+            query["pageNumber"] = pageNumber;
 
             HttpResponseMessage response = await httpClient.GetAsync($"{baseUri}?{query}");
 
             if (response.IsSuccessStatusCode)
             {
                 res.Cities = await response.Content.ReadFromJsonAsync<List<City>>() ?? new List<City>();
+
+                // Deserialise pagination header meta tag into PaginationDetails model
+                res.Pagination = JsonSerializer.Deserialize<PaginationDetails>(response?.Headers?.GetValues("X-Pagination").FirstOrDefault() ?? "");
             }
 
             return res;

@@ -23,8 +23,8 @@ namespace GiveMeCityInfo.Pages
             try
             {
                 ApiService apiService = new();
-                var pageNumber = Request.Query["PageNumber"].FirstOrDefault() ?? "1";
                 var selectedCountries = Request.Query["SelectedCountries"].ToArray();
+                var pageNumber = Request.Query["PageNumber"].FirstOrDefault() ?? "1";
 
                 Cities = await apiService.GetCitiesByCountry(selectedCountries, pageNumber);
                 Countries = await apiService.GetCountries();

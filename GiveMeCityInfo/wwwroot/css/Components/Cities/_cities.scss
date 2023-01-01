@@ -65,3 +65,13 @@
     opacity: 1;
 }
 /*#endregion Cards*/
+/*#region Pagination*/
+.page-link {
+    color: black;
+}
+.page-link.active {
+    color: white;
+    background-color: midnightblue;
+    border: 1px solid salmon;
+}
+/*#endregion Pagination*/
