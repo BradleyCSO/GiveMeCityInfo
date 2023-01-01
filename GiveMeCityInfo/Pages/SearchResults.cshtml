@@ -1,0 +1,35 @@
+﻿@page
+@using GiveMeCityInfo.Models;
+@model GiveMeCityInfo.Pages.SearchResultsModel
+
+@if (Model?.Cities?.Cities != null)
+{
+    <form class="mt-2 bg-transparent form-floating" method="get">
+        <input type="text" class="form-control" id="city-search" asp-for="SearchQuery" placeholder="Please enter a city" />
+        <label for="city-search" class="form-label">City search</label>
+        <button class="btn btn-primary" type="submit" hidden>Submit</button>
+    </form>
+
+    <div class="mt-4 alert alert-primary" role="alert">
+        @Model.Cities.Cities.Count() result(s) found for "@Model.SearchQuery"
+    </div>
+
+    <div class="list-group">
+        @foreach (var city in Model.Cities.Cities ?? new List<City>())
+        {
+            <a href="/city?cityId=@city?.id" class="p-4 list-group-item list-group-item-action nav-item">
+                @city?.name
+                <span class="ms-2 badge bg-primary nav-tabs">@city?.country</span>
+                <span class="ms-2 badge bg-primary nav-tabs">@city?.continent</span>
+            </a>
+        }
+    </div>
+
+}
+else
+{
+    <partial name="/Pages/Partials/_ServiceUnavailable.cshtml" />
+}
+
+<link rel="stylesheet" href="~/css/Components/SearchResults/_SearchResults.min.css" />
+<script src="js/searchAutoComplete.js" asp-append-version="true"></script>

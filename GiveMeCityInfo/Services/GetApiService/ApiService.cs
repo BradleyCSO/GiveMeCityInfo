@@ -23,6 +23,24 @@ namespace GiveMeCityInfo.Services.GetApiService
             return cities;
         }
 
+        public async Task<PaginatedCities> GetFuzzyCities([FromQuery] string? searchQuery)
+        {
+            PaginatedCities res = new();
+
+            // Encode the query
+            var query = HttpUtility.ParseQueryString(baseUri.Query);
+            query.Add("searchQuery", searchQuery);
+
+            HttpResponseMessage response = await httpClient.GetAsync($"{baseUri}?{query}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                res.Cities = await response.Content.ReadFromJsonAsync<List<City>>() ?? new List<City>();
+            }
+
+            return res;
+        }
+
         public async Task<List<Country>> GetCountries()
         {
             List<Country> countries = new();
