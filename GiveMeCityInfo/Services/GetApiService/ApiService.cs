@@ -7,8 +7,18 @@ namespace GiveMeCityInfo.Services.GetApiService
 {
     public class ApiService : IApiService
     {
+        private readonly ILogger<ApiService> _logger;
         private readonly UriBuilder baseUri = new("https://localhost:7192/api/v2/cities");
         private readonly HttpClient httpClient = new();
+
+        public ApiService(ILogger<ApiService> logger)
+        {
+            _logger = logger;
+        }
+
+        public ApiService()
+        {
+        }
 
         public async Task<List<City>> GetCities()
         {
@@ -18,6 +28,11 @@ namespace GiveMeCityInfo.Services.GetApiService
             if (response.IsSuccessStatusCode)
             {
                 cities = await response.Content.ReadFromJsonAsync<List<City>>() ?? new List<City>();
+            }
+            else
+            {
+                // Add error handling code here
+                _logger.LogError($"Error getting cities: {response.ReasonPhrase}");
             }
 
             return cities;
@@ -41,6 +56,10 @@ namespace GiveMeCityInfo.Services.GetApiService
                 // Deserialise pagination header meta tag into PaginationDetails model
                 res.Pagination = JsonSerializer.Deserialize<PaginationDetails>(response?.Headers?.GetValues("X-Pagination").FirstOrDefault() ?? "");
             }
+            else
+            {
+                _logger.LogError($"Error getting query {searchQuery}: {response.ReasonPhrase}");
+            }
 
             return res;
         }
@@ -54,6 +73,10 @@ namespace GiveMeCityInfo.Services.GetApiService
             if (response.IsSuccessStatusCode)
             {
                 countries = await response.Content.ReadFromJsonAsync<List<Country>>() ?? new List<Country>();
+            }
+            else
+            {
+                _logger.LogError($"Error getting countries: {response.ReasonPhrase}");
             }
 
             return countries;
@@ -85,6 +108,10 @@ namespace GiveMeCityInfo.Services.GetApiService
                 // Deserialise pagination header meta tag into PaginationDetails model
                 res.Pagination = JsonSerializer.Deserialize<PaginationDetails>(response?.Headers?.GetValues("X-Pagination").FirstOrDefault() ?? "");
             }
+            else
+            {
+                _logger.LogError($"Error getting cities from {countries}: {response.ReasonPhrase}");
+            }
 
             return res;
         }
@@ -98,6 +125,10 @@ namespace GiveMeCityInfo.Services.GetApiService
             {
                 res = await response.Content.ReadFromJsonAsync<City>() ?? new City();
             }
+            else
+            {
+                _logger.LogError($"Error getting city by id {cityId}: {response.ReasonPhrase}");
+            }
 
             return res;
         }
@@ -110,6 +141,10 @@ namespace GiveMeCityInfo.Services.GetApiService
             if (response.IsSuccessStatusCode)
             {
                 res = await response.Content.ReadFromJsonAsync<List<PointsOfInterest>>() ?? new List<PointsOfInterest>();
+            }
+            else
+            {
+                _logger.LogError($"Error getting points of interest for city with id {cityId}: {response.ReasonPhrase}");
             }
 
             return res;
