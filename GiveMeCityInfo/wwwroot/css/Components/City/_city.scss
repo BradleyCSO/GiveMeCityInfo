@@ -1,19 +1,65 @@
 ﻿@import "../../bootstrap.required.scss";
 @import "../../../lib/bootstrap/scss/_reboot.scss";
 @import "../../../lib/bootstrap/scss/_root.scss";
+@import "../../../lib/bootstrap/scss/_buttons.scss";
 
 /*#region City Grid*/
 .city-image-grid {
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(2, 1fr);
-    height: 70vh;
-    gap: 1vh;
-}
+    height: 40vh;
+    gap: 0.2vh;
+    justify-content: center;
 
+    img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+    img:first-child {
+        height: 100%;
+    }
+
+    img:not(:first-child) {
+        height: 20vh;
+    }
+}
 .city-image-grid-item {
     &.large {
         grid-row: span 2;
     }
 }
 /*#endregion City Grid*/
+/*#region Content */
+
+.scrollable-container {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    img {
+        height: 15vh;
+    }
+
+    .scrollable-items {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .scrollable-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .button-left {
+        left: 0vw;
+    }
+
+    .button-right {
+        right: 0;
+    }
+}
+/*#endregion Content*/

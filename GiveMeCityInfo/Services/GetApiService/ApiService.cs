@@ -101,5 +101,18 @@ namespace GiveMeCityInfo.Services.GetApiService
 
             return res;
         }
+        public async Task<List<PointsOfInterest>> GetPointsOfInterestForCity([FromQuery] string cityId)
+        {
+            List<PointsOfInterest> res = new();
+
+            HttpResponseMessage response = await httpClient.GetAsync($"{baseUri}/{cityId}/pointsofinterest/");
+
+            if (response.IsSuccessStatusCode)
+            {
+                res = await response.Content.ReadFromJsonAsync<List<PointsOfInterest>>() ?? new List<PointsOfInterest>();
+            }
+
+            return res;
+        }
     }
 }

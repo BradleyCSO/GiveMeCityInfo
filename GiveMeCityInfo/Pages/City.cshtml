@@ -1,12 +1,58 @@
 ﻿@page
+@using GiveMeCityInfo.Models;
 @model GiveMeCityInfo.Pages.CityModel
 
-<h1>Hello @Model?.City?.name!</h1>
 
-<div class="city-image-grid">
-    <img src="@Model.City.imageUrl" class="city-image-grid-item large">
-    <img src="@Model.City.imageUrl" class="city-image-grid-item">
-    <img src="@Model.City.imageUrl" class="city-image-grid-item">
-</div>
+@if (@Model.City != null)
+{
+    <h1>Hello, @Model?.City?.name!</h1>
+    <p class="text-muted">@Model?.City?.continent, @Model?.City?.country</p>
+
+    <div class="city-image-grid">
+        <img src="@Model?.City?.imageUrl" class="city-image-grid-item large">
+        <img src="@Model?.City?.imageUrl" class="city-image-grid-item">
+        <img src="@Model?.City?.imageUrl" class="city-image-grid-item">
+    </div>
+
+    <h3 class="mt-2">About @Model?.City?.name</h3>
+    <p>@Model?.City?.description</p>
+
+    <h3>Things to do in @Model?.City?.name</h3>
+
+    <div class="mx-auto scrollable-container">
+        <button id="button-left" class="mt-1 btn btn-primary scrollable-button button-left" type="button" disabled>&larr;</button>
+        <div class="text-center scrollable-items">
+            @foreach (var activity in Model?.PointsOfInterest ?? new List<PointsOfInterest>())
+            {
+                <div class="card card-block">
+                    <img src="@activity.imageUrl" class="card-img-top" alt="@activity.imageAltText">
+                    <div class="card-body m-5">
+                        <h5 class="card-title">@activity.name</h5>
+                        <p class="card-text text-wrap">@activity.description</p>
+                    </div>
+                </div>
+            }
+
+            <!-- Placeholder items for design illustration -->
+            @for (int i = 0; i < 6; i++)
+            {
+                <div class="card card-block">
+                    <img src="assets/champs.jpg" class="card-img-top">
+                    <div class="card-body m-5">
+                        <h5 class="card-title">A suitably long name.</h5>
+                        <p class="card-text text-wrap">With a suitably long description.</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button id="button-right" class="mt-1 btn btn-primary scrollable-button button-right" type="button">&rarr;</button>
+    </div>
+}
+else
+{
+    <partial name="/Pages/Partials/_ServiceUnavailable.cshtml" />
+}
 
 <link rel="stylesheet" href="~/css/Components/City/_city.min.css" />
+<script src="js/city.js" asp-append-version="true"></script>
