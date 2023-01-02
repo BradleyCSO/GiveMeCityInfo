@@ -3,7 +3,7 @@
 @model GiveMeCityInfo.Pages.CityModel
 
 
-@if (@Model.City != null)
+@if (Model?.PointsOfInterest?.Any() ?? false)
 {
     <h1>Hello, @Model?.City?.name!</h1>
     <p class="text-muted">@Model?.City?.continent, @Model?.City?.country</p>

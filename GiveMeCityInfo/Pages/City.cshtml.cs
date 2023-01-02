@@ -9,11 +9,8 @@ namespace GiveMeCityInfo.Pages
     public class CityModel : PageModel
     {
         private readonly ILogger<CityModel> _logger;
-
         public City? City { get; set; }
         public List<PointsOfInterest>? PointsOfInterest { get; set; }
-        public List<string>? ActivityTypes { get; set; }
-        public string? SelectedActivity { get; set; }
 
         public CityModel(ILogger<CityModel> logger)
         {
